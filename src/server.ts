@@ -1,5 +1,9 @@
 import express from "express";
-import type { TApplication, TRequest, TResponse } from "./types/types";
+import type {
+  TApplication,
+  TRequest,
+  TResponse,
+} from "./shared/types/express.types";
 import { Pool } from "pg";
 import config from "./config";
 
@@ -40,7 +44,7 @@ const initDB = async () => {
 initDB();
 
 app.get("/", (req: TRequest, res: TResponse) => {
-  res.status(200).json({
+  return res.status(200).json({
     message: "Express Server with postgres",
     author: "Shaqibul Islam",
   });
@@ -60,13 +64,13 @@ app.post("/api/users", async (req: TRequest, res: TResponse) => {
       [name, email, password, age],
     );
 
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       message: "User Created Successfully",
       data: result.rows[0],
     });
   } catch (error: any) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: error.message,
       error: error,
@@ -83,13 +87,13 @@ app.get("/api/users", async (req: TRequest, res: TResponse) => {
         FROM users
         `,
     );
-    res.status(201).json({
+    return res.status(200).json({
       success: true,
       message: "User fetched Successfully",
       data: result.rows,
     });
   } catch (error: any) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: error.message,
       error: error,
@@ -110,19 +114,19 @@ app.get("/api/users/:id", async (req: TRequest, res: TResponse) => {
       [id],
     );
     if (result.rows.length === 0) {
-      res.status(404).json({
+      return res.status(404).json({
         success: false,
         message: "User not found",
         data: {},
       });
     }
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: "User fetched Successfully",
       data: result.rows[0],
     });
   } catch (error: any) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: error.message,
       error: error,
@@ -150,19 +154,19 @@ app.put("/api/users/:id", async (req: TRequest, res: TResponse) => {
     );
 
     if (result.rows.length === 0) {
-      res.status(404).json({
+      return res.status(404).json({
         success: false,
         message: "User not found",
         data: {},
       });
     }
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       message: "User updated Successfully",
       data: result.rows[0],
     });
   } catch (error: any) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: error.message,
       error: error,
@@ -184,19 +188,19 @@ app.delete("/api/users/:id", async (req: TRequest, res: TResponse) => {
     );
     console.log(result);
     if (result.rowCount === 0) {
-      res.status(404).json({
+      return res.status(404).json({
         success: false,
         message: "User not found",
         data: {},
       });
     }
-    res.status(201).json({
+    return res.status(200).json({
       success: true,
       message: "User deleted Successfully",
       data: result.rows[0],
     });
   } catch (error: any) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: error.message,
       error: error,
