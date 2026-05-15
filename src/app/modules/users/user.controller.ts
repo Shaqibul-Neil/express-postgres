@@ -5,16 +5,9 @@ import {
   AppError,
 } from "../../../shared/utils/utils";
 import { UserServices } from "./user.service";
-import { validateCreateUser } from "./user.validation";
 
 //POST users
 const createUser = asyncHandler(async (req: TRequest, res: TResponse) => {
-  const validation = validateCreateUser(req.body);
-
-  if (!validation.success) {
-    throw new AppError(validation.message, 400);
-  }
-
   const result = await UserServices.createUserIntoDB(req.body);
 
   sendResponse({
@@ -43,7 +36,6 @@ const getAllUsers = asyncHandler(async (req: TRequest, res: TResponse) => {
 const getSingleUser = asyncHandler(async (req: TRequest, res: TResponse) => {
   const { id } = req.params;
   const result = await UserServices.getSingleUserFromDB(id as string);
-  if (!result) throw new AppError("User not found", 404);
 
   sendResponse({
     res,
@@ -58,7 +50,7 @@ const getSingleUser = asyncHandler(async (req: TRequest, res: TResponse) => {
 const updateUser = asyncHandler(async (req: TRequest, res: TResponse) => {
   const { id } = req.params;
   const result = await UserServices.updateUserInDB(id as string, req.body);
-  if (!result) throw new AppError("User not found", 404);
+
   sendResponse({
     res,
     success: true,
@@ -72,7 +64,7 @@ const updateUser = asyncHandler(async (req: TRequest, res: TResponse) => {
 const deleteUser = asyncHandler(async (req: TRequest, res: TResponse) => {
   const { id } = req.params;
   const result = await UserServices.deleteUserFromDB(id as string);
-  if (!result) throw new AppError("User not found", 404);
+
   sendResponse({
     res,
     success: true,

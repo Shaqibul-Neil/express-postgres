@@ -1,5 +1,5 @@
 import pool from "../../../db";
-import type { IUser } from "./user.interface";
+import type { IUser } from "./user.validation";
 
 const createUser = async (payload: IUser) => {
   const { name, email, password, age } = payload;
@@ -35,7 +35,7 @@ const getSingleUser = async (id: string) => {
 };
 
 const updateUser = async (id: string, payload: Partial<IUser>) => {
-  const { name, password, age, is_active } = payload;
+  const { name, password, age } = payload;
   const result = await pool.query(
     `UPDATE users 
      SET 
@@ -45,7 +45,7 @@ const updateUser = async (id: string, payload: Partial<IUser>) => {
      is_active = COALESCE($4, is_active),
      updated_at = NOW()
      WHERE id = $5 RETURNING *`,
-    [name, password, age, is_active, id],
+    [name, password, age, id],
   );
   return result.rows[0];
 };

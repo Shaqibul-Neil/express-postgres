@@ -1,10 +1,14 @@
 import express from "express";
 import cors from "cors";
 import router from "./app/routes";
-import type { TRequest, TResponse } from "./shared/types/express.types";
+import type {
+  TApplication,
+  TRequest,
+  TResponse,
+} from "./shared/types/express.types";
 import { globalErrorHandler } from "./app/middlewares/globalErrorHandler";
 
-const app = express();
+const app: TApplication = express();
 
 // Parsers
 app.use(express.json());
