@@ -1,16 +1,27 @@
+## 📁 Project Structure
+
+```bash
 src/
-├── app.ts                # Express App configuration
-├── server.ts             # Server entry & DB Connection
+├── app.ts
+├── server.ts
 ├── app/
-│   ├── config/           # App Configuration (dotenv, etc)
-│   ├── middlewares/      # Global Error Handler, Auth, etc
-│   ├── modules/          # Core Business Logic (User, Product, etc)
-│   │   └── user/         # User Module
+│   ├── routes/
+│   ├── middlewares/
+│   │        ├── globalErrorHandler.ts
+│   │        ├── notFound.ts
+│   ├── modules/
+│   │   └── users/
 │   │       ├── user.controller.ts
+│   │       ├── user.models.ts
 │   │       ├── user.route.ts
 │   │       ├── user.service.ts
 │   │       ├── user.validation.ts
 │   │       └── user.interface.ts
-│   ├── routes/           # Central Route Handler
-│   └── utils/            # catchAsync, sendResponse, AppError
-└── db/                   # Database Pool configuration
+├── config/
+├── shared/
+│   ├── constants/
+│   ├── types/
+│   ├── utils/
+└── db/
+
+```
