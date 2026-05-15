@@ -15,13 +15,24 @@ export const initDB = async () => {
         password VARCHAR(10) NOT NULL,
         is_active BOOLEAN DEFAULT TRUE,
         age INT,
-
         created_at TIMESTAMP DEFAULT NOW(),
         updated_at TIMESTAMP DEFAULT NOW()
         );
 
         `);
-    console.log("database connected successfully");
+    console.log("Users table ready ✅");
+    await pool.query(
+      `
+          CREATE TABLE IF NOT EXISTS profiles(
+          id SERIAL PRIMARY KEY,
+          user_id INT UNIQUE REFERENCES users(id) ON DELETE CASCADE,
+          bio TEXT, address TEXT, phoneNumber VARCHAR(11),gender VARCHAR(6),
+          created_at TIMESTAMP DEFAULT NOW(),
+          updated_at TIMESTAMP DEFAULT NOW()
+          )
+          `,
+    );
+    console.log("Profiles table ready ✅");
   } catch (error) {
     console.log(error);
     process.exit(1);
